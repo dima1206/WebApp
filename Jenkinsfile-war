@@ -1,9 +1,9 @@
 def APP_VERSION
 def GIT_HASH
-def WAR_PUSH_FILE_NAME
+def WAR_ARTIFACT_FILE_NAME
 
 pipeline {
-  agent { node { label 'git && java && maven && s3_artifacts_readwrite' } }
+  agent { node { label 'git && java && maven' } }
   stages {
     stage('Clone git repo') {
       steps {
@@ -17,7 +17,7 @@ pipeline {
         script {
           APP_VERSION = sh (script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim()
           GIT_HASH = sh (script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-          WAR_PUSH_FILE_NAME = "WebApp-${APP_VERSION}-${GIT_HASH}.war"
+          WAR_ARTIFACT_FILE_NAME = "WebApp-${APP_VERSION}-${GIT_HASH}.war"
         }
       }
     }
@@ -35,10 +35,14 @@ pipeline {
     }
     stage('Rename WAR file') {
       steps {
-        sh "mv target/WebApp.war target/${WAR_PUSH_FILE_NAME}"
+        sh "mv target/WebApp.war ${WAR_ARTIFACT_FILE_NAME}"
       }
     }
-    // TODO: push WAR file to storage
+    stage('Push WAR file to the S3 bucket') {
+      steps{
+        archiveArtifacts "${WAR_ARTIFACT_FILE_NAME}"
+      }
+    }
     // TODO: trigger next pipeline
   }
 }
