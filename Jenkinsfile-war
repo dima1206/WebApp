@@ -1,0 +1,41 @@
+def APP_VERSION
+def GIT_HASH
+
+pipeline {
+  agent { node { label 'maven' } }
+  stages {
+    stage('Clone git repo') {
+      steps {
+        git branch: 'webapp/main',
+            credentialsId: 'jenkins-github',
+            url: 'git@github.com:dima1206/WebApp.git'
+      }
+    }
+    stage('Get app version and commit hash') {
+      steps {
+        script {
+          APP_VERSION = sh (script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim()
+          GIT_HASH = sh (script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        }
+      }
+    }
+    stage('Clean target directory') {
+      steps {
+        sh 'mvn clean'
+      }
+    }
+    // TODO: mvn compile (after adding java code)
+    // TODO: mvn test (after creating tests)
+    stage('Create WAR package') {
+      steps {
+        sh 'mvn package'
+      }
+    }
+    stage('Rename WAR file') {
+      steps {
+        sh "mv target/WebApp.war target/WebApp-${APP_VERSION}-${GIT_HASH}.war"
+      }
+    }
+    // TODO: push WAR file to storage
+  }
+}
