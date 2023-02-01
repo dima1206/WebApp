@@ -30,7 +30,9 @@ pipeline {
     }
     stage('Build docker image') {
       steps {
-        sh " docker build -t webapp:${APP_VERSION}-${BUILD_NUMBER} ."
+        script {
+          dockerImage = docker.build("dima1206/webapp:${APP_VERSION}-${BUILD_NUMBER}")
+        }
       }
     }
     // TODO: push to Docker Hub
