@@ -18,12 +18,21 @@ pipeline {
           step ([$class: 'CopyArtifact',
               projectName: 'WebApp-CI-WAR',
               selector: specific("${params.WAR_BUILD_NUMBER}"),
-              filter: "WebApp*.war",
+              filter: "WebApp-*.war",
               target: '.']);
         }
       }
     }
-    // TODO: build
+    stage('Rename WAR file') {
+      steps {
+        sh "mv WebApp-*.war WebApp.war"
+      }
+    }
+    stage('Build docker image') {
+      steps {
+        sh " docker build -t webapp:${APP_VERSION}-${BUILD_NUMBER} ."
+      }
+    }
     // TODO: push to Docker Hub
     // TODO: trigger next pipeline
   }
