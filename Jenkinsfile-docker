@@ -1,0 +1,26 @@
+pipeline {
+  agent { node { label 'git && docker' } }
+  stages {
+    stage('Clone git repo') {
+      steps {
+        git branch: 'docker/main',
+            credentialsId: 'jenkins-github',
+            url: 'git@github.com:dima1206/WebApp.git'
+      }
+    }
+    stage('Get WAR artifact') {
+      steps {
+        script {
+          step ([$class: 'CopyArtifact',
+              projectName: 'WebApp-CI-WAR',
+              selector: specific("20"), // TODO: Get build number dynamically
+              filter: "WebApp*.war",
+              target: '.']);
+        }
+      }
+    }
+    // TODO: build
+    // TODO: push to Docker Hub
+    // TODO: trigger next pipeline
+  }
+}
