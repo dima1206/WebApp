@@ -1,5 +1,9 @@
 pipeline {
   agent { node { label 'git && docker' } }
+  parameters {
+    string(name: 'APP_VERSION', description: 'App version that will be used to tag Docker image')
+    string(name: 'WAR_BUILD_NUMBER', description: 'Build number of WAR CI from which the WAR artifact will be taken')
+  }
   stages {
     stage('Clone git repo') {
       steps {
@@ -13,7 +17,7 @@ pipeline {
         script {
           step ([$class: 'CopyArtifact',
               projectName: 'WebApp-CI-WAR',
-              selector: specific("20"), // TODO: Get build number dynamically
+              selector: specific("${params.WAR_BUILD_NUMBER}"),
               filter: "WebApp*.war",
               target: '.']);
         }

@@ -48,7 +48,9 @@ pipeline {
     }
     stage('Start Docker pipeline') {
       steps {
-        build job: 'WebApp-CI-Docker', parameters: [ string(name: 'APP_VERSION', value: "${APP_VERSION}")]
+        build job: 'WebApp-CI-Docker', parameters: [
+          string(name: 'APP_VERSION', value: "${APP_VERSION}"),
+          string(name: 'WAR_BUILD_NUMBER', value: "${BUILD_NUMBER}")]
       }
     }
   }
