@@ -35,7 +35,16 @@ pipeline {
         }
       }
     }
-    // TODO: push to Docker Hub
+    stage('Push the image to Docker Hub') {
+      steps {
+        script {
+          docker.withRegistry('', 'jenkins-dockerhub') {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    // TODO: clean up storage
     // TODO: trigger next pipeline
   }
 }
