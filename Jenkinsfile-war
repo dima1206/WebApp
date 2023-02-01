@@ -42,10 +42,14 @@ pipeline {
       }
     }
     stage('Push WAR file to the S3 bucket') {
-      steps{
+      steps {
         archiveArtifacts "${WAR_ARTIFACT_FILE_NAME}"
       }
     }
-    // TODO: trigger next pipeline
+    stage('Start Docker pipeline') {
+      steps {
+        build job: 'WebApp-CI-Docker', parameters: [ string(name: 'APP_VERSION', value: "${APP_VERSION}")]
+      }
+    }
   }
 }
