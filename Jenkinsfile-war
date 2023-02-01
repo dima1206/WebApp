@@ -4,6 +4,9 @@ def WAR_ARTIFACT_FILE_NAME
 
 pipeline {
   agent { node { label 'git && java && maven' } }
+  options {
+    copyArtifactPermission('WebApp-CI-Docker');
+  }
   stages {
     stage('Clone git repo') {
       steps {
