@@ -1,4 +1,4 @@
-def IMAGE_TAG
+def IMAGE_VERSION
 
 pipeline {
   agent { node { label 'git && docker' } }
@@ -33,8 +33,8 @@ pipeline {
     stage('Build docker image') {
       steps {
         script {
-          IMAGE_TAG = "${APP_VERSION}-${BUILD_NUMBER}"
-          dockerImage = docker.build("dima1206/webapp:${IMAGE_TAG}")
+          IMAGE_VERSION = "${APP_VERSION}-${BUILD_NUMBER}"
+          dockerImage = docker.build("dima1206/webapp:${IMAGE_VERSION}")
         }
       }
     }
@@ -48,6 +48,10 @@ pipeline {
       }
     }
     // TODO: clean up storage
-    // TODO: trigger next pipeline
+    stage('Start deploy pipeline') {
+      steps {
+        build job: 'WebApp-CD', parameters: [string(name: 'IMAGE_VERSION', value: "${IMAGE_VERSION}")]
+      }
+    }
   }
 }
