@@ -14,7 +14,16 @@ pipeline {
         }
       }
     }
-    // TODO: remove old container
+    stage('Stop all containers') {
+      steps {
+        sh 'docker stop `docker ps -qa`'
+      }
+    }
+    stage('Remove all containers') {
+      steps {
+        sh 'docker rm `docker ps -qa`'
+      }
+    }
     stage('Run the new container') {
       steps {
         script {
