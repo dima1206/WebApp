@@ -1,0 +1,20 @@
+pipeline {
+  agent { node { label 'webserver' } }
+  parameters {
+    string(name: 'IMAGE_VERSION', description: 'Version of the docker image to deploy')
+  }
+  stages {
+    stage('Pull the image from Docker Hub') {
+      steps {
+        script {
+          docker.withRegistry('', 'jenkins-dockerhub') {
+            dockerImage = docker.image("dima1206/webapp:${IMAGE_VERSION}")
+            dockerImage.pull()
+          }
+        }
+      }
+    }
+    // TODO: remove old container
+    // TODO: run new container
+  }
+}
