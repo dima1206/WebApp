@@ -15,6 +15,12 @@ pipeline {
       }
     }
     // TODO: remove old container
-    // TODO: run new container
+    stage('Run the new container') {
+      steps {
+        script {
+          dockerImage.run('-d -p 8080:8080')
+        }
+      }
+    }
   }
 }
