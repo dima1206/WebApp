@@ -50,7 +50,7 @@ pipeline {
     // TODO: clean up storage
     stage('Start deploy pipeline') {
       steps {
-        build job: 'WebApp-CD', parameters: [string(name: 'IMAGE_VERSION', value: "${IMAGE_VERSION}")]
+        build job: 'WebApp-CD', propagate: false, wait: false, parameters: [string(name: 'IMAGE_VERSION', value: "${IMAGE_VERSION}")]
       }
     }
   }
