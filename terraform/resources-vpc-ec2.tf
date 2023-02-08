@@ -57,7 +57,9 @@ resource "aws_security_group" "jenkins_controller_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    Name = "Jenkins controller security group"
+  })
 }
 
 resource "aws_security_group" "jenkins_agent_sg" {
@@ -90,5 +92,7 @@ resource "aws_security_group" "jenkins_agent_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    Name = "Jenkins agent security group"
+  })
 }
