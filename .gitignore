@@ -1,0 +1,7 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+
+my_ip.tfvars
+
+*.md.backup
