@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Clone git repo') {
       steps {
-        git branch: 'webapp/main',
+        git branch: 'webapp/dev',
             credentialsId: 'jenkins-github',
             url: 'git@github.com:dima1206/WebApp.git'
       }
