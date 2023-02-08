@@ -8,6 +8,9 @@ locals {
     Environment = var.environment
     Terraform = "true"
   }
+
+  # https://api.github.com/meta
+  github_webhook_ips = ["192.30.252.0/22", "185.199.108.0/22", "140.82.112.0/20", "143.55.64.0/20"]
 }
 
 module "jenkins_vpc" {
@@ -37,7 +40,13 @@ resource "aws_security_group" "jenkins_controller_sg" {
     cidr_blocks = [var.my_ip]
   }
 
-  # TODO: github webhook
+  ingress {
+    description = "GitHub webhook IPs"
+    from_port = 8080
+    to_port = 8080
+    protocol = "tcp"
+    cidr_blocks = local.github_webhook_ips
+  }
 
   egress {
     description     = "All traffic"
