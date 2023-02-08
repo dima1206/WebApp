@@ -20,10 +20,10 @@ terraform init
 
 TODO: finish this guide
 
-echo 'my_ip = "0.0.0.0/0"' > my_ip.tfvars
+echo 'my_ip = "0.0.0.0/0"' > my_ip.tfvars  # TODO: ssh key
 terraform plan -var-file="my_ip.tfvars"
 terraform apply -var-file="my_ip.tfvars"
 
 TODO: destroy whatever was created from Jenkins first
 
-terraform destroy
+terraform destroy -var-file="my_ip.tfvars"

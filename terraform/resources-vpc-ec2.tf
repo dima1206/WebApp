@@ -11,6 +11,8 @@ locals {
 
   # https://api.github.com/meta
   github_webhook_ips = ["192.30.252.0/22", "185.199.108.0/22", "140.82.112.0/20", "143.55.64.0/20"]
+
+  amazon_linux_ami = "ami-06c39ed6b42908a36"
 }
 
 module "jenkins_vpc" {
@@ -94,5 +96,23 @@ resource "aws_security_group" "jenkins_agent_sg" {
 
   tags = merge(local.tags, {
     Name = "Jenkins agent security group"
+  })
+}
+
+resource "aws_key_pair" "my_ssh_pub_key" {
+  key_name   = "my_ssh_pub_key"
+  public_key = var.my_ssh_pub_key
+}
+
+resource "aws_instance" "jenkins_controller" {
+  ami                    = local.amazon_linux_ami
+  instance_type          = var.instance_type
+  key_name               = "my_ssh_pub_key"
+  vpc_security_group_ids = [aws_security_group.jenkins_controller_sg.id]
+  private_ip             = local.controller_private_ip
+  subnet_id              = module.jenkins_vpc.public_subnets[0]
+
+  tags = merge(local.tags, {
+    Name = "Jenkins controller"
   })
 }
