@@ -1,8 +1,6 @@
 locals {
-  cidr                  = "10.1.0.0/16"
-  subnet                = "10.1.0.0/24"
-  controller_private_ip = "10.1.0.20"
-  agent_private_ip      = "10.1.0.30"
+  cidr   = "10.1.0.0/16"
+  subnet = "10.1.0.0/24"
 
   tags = {
     Environment = var.environment
@@ -82,7 +80,7 @@ resource "aws_security_group" "jenkins_agent_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${local.controller_private_ip}/32"]
+    cidr_blocks = ["${aws_instance.jenkins_controller.private_ip}/32"]
   }
 
   egress {
@@ -110,9 +108,7 @@ resource "aws_instance" "jenkins_controller" {
   key_name      = "my_ssh_pub_key"
 
   vpc_security_group_ids = [aws_security_group.jenkins_controller_sg.id]
-
-  private_ip = local.controller_private_ip
-  subnet_id  = module.jenkins_vpc.public_subnets[0]
+  subnet_id              = module.jenkins_vpc.public_subnets[0]
 
   tags = merge(local.tags, {
     Name = "Jenkins controller"
