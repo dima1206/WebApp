@@ -1,12 +1,12 @@
 locals {
-  cidr = "10.1.0.0/16"
-  subnet = "10.1.0.0/24"
+  cidr                  = "10.1.0.0/16"
+  subnet                = "10.1.0.0/24"
   controller_private_ip = "10.1.0.20"
-  agent_private_ip = "10.1.0.30"
+  agent_private_ip      = "10.1.0.30"
 
   tags = {
     Environment = var.environment
-    Terraform = "true"
+    Terraform   = "true"
   }
 
   # https://api.github.com/meta
@@ -22,15 +22,15 @@ module "jenkins_vpc" {
   name = "Jenkins VPC"
   cidr = local.cidr
 
-  azs = ["${var.region}a"]
-  public_subnets = [local.subnet]
+  azs                 = ["${var.region}a"]
+  public_subnets      = [local.subnet]
   public_subnet_names = ["Jenkins subnet"]
 
   tags = local.tags
 }
 
 resource "aws_security_group" "jenkins_controller_sg" {
-  name = "Jenkins controller security group"
+  name        = "Jenkins controller security group"
   description = "Security group for Jenkins controller"
   vpc_id      = module.jenkins_vpc.vpc_id
 
@@ -44,14 +44,14 @@ resource "aws_security_group" "jenkins_controller_sg" {
 
   ingress {
     description = "GitHub webhook IPs"
-    from_port = 8080
-    to_port = 8080
-    protocol = "tcp"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
     cidr_blocks = local.github_webhook_ips
   }
 
   egress {
-    description     = "All traffic"
+    description      = "All traffic"
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -65,7 +65,7 @@ resource "aws_security_group" "jenkins_controller_sg" {
 }
 
 resource "aws_security_group" "jenkins_agent_sg" {
-  name = "Jenkins agent security group"
+  name        = "Jenkins agent security group"
   description = "Security group for Jenkins agent"
   vpc_id      = module.jenkins_vpc.vpc_id
 
@@ -86,7 +86,7 @@ resource "aws_security_group" "jenkins_agent_sg" {
   }
 
   egress {
-    description     = "All traffic"
+    description      = "All traffic"
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -105,12 +105,14 @@ resource "aws_key_pair" "my_ssh_pub_key" {
 }
 
 resource "aws_instance" "jenkins_controller" {
-  ami                    = local.amazon_linux_ami
-  instance_type          = var.instance_type
-  key_name               = "my_ssh_pub_key"
+  ami           = local.amazon_linux_ami
+  instance_type = var.instance_type
+  key_name      = "my_ssh_pub_key"
+
   vpc_security_group_ids = [aws_security_group.jenkins_controller_sg.id]
-  private_ip             = local.controller_private_ip
-  subnet_id              = module.jenkins_vpc.public_subnets[0]
+
+  private_ip = local.controller_private_ip
+  subnet_id  = module.jenkins_vpc.public_subnets[0]
 
   tags = merge(local.tags, {
     Name = "Jenkins controller"
