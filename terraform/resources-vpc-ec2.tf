@@ -114,3 +114,16 @@ resource "aws_instance" "jenkins_controller" {
     Name = "Jenkins controller"
   })
 }
+
+resource "aws_instance" "jenkins_agent" {
+  ami           = local.amazon_linux_ami
+  instance_type = var.instance_type
+  key_name      = "my_ssh_pub_key"
+
+  vpc_security_group_ids = [aws_security_group.jenkins_agent_sg.id]
+  subnet_id              = module.jenkins_vpc.public_subnets[0]
+
+  tags = merge(local.tags, {
+    Name = "Jenkins agent"
+  })
+}
