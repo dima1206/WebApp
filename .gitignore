@@ -5,3 +5,5 @@
 my.tfvars
 
 *.md.backup
+
+*.ini

@@ -1,0 +1,30 @@
+---
+
+- name: Enable amazon-linux-extras OpenJDK
+  shell: amazon-linux-extras enable java-openjdk11
+  args:
+    creates: /usr/bin/java
+
+- name: Install OpenJDK and Git
+  yum:
+    name:
+      - java-11-openjdk
+      - git
+    update_cache: yes
+    state: latest
+
+- name: Add Jenkins repository
+  yum_repository:
+    name: jenkins
+    state: present
+    baseurl: http://pkg.jenkins.io/redhat
+    gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
+    gpgcheck: yes
+    enabled: yes
+
+- name: Install Jenkins
+  yum:
+    name:
+      - "jenkins-{{ jenkins_version }}"
+    update_cache: yes
+    state: present

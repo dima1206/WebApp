@@ -1,0 +1,7 @@
+---
+- name: Connection Testing
+  hosts: controller
+  become: yes
+
+  roles:
+    - jenkins_controller
