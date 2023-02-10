@@ -1,0 +1,59 @@
+---
+- name: Make sure that Jenkins service is stopped
+  service:
+    name: jenkins
+    state: stopped
+
+- name: Set Jenkins Java options
+  lineinfile:
+    dest: /usr/lib/systemd/system/jenkins.service
+    regexp: '^Environment="JAVA_OPTS='
+    line: "Environment=\"JAVA_OPTS=\"{{ jenkins_java_options }}\""
+
+- name: Copy main config file
+  template:
+    src: config.xml.j2
+    dest: "{{ jenkins_home }}/config.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Copy location config file
+  template:
+    src: jenkins.model.JenkinsLocationConfiguration.xml.j2
+    dest: "{{ jenkins_home }}/jenkins.model.JenkinsLocationConfiguration.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Create users directory
+  file:
+    path: "{{ jenkins_home }}/users"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Copy users config file
+  template:
+    src: users/users.xml.j2
+    dest: "{{ jenkins_home }}/users/users.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Create admin user directory
+  file:
+    path: "{{ jenkins_home }}/users/{{ jenkins_user }}"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0700
+
+- name: Copy admin user config file
+  template:
+    src: users/user_config.xml.j2
+    dest: "{{ jenkins_home }}/users/{{ jenkins_user }}/config.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0644

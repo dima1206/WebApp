@@ -1,4 +1,9 @@
 ---
-- include: "install.yml"
+- import_tasks: "install.yml"
 
-# TODO: configure
+- import_tasks: "configure.yml"
+
+- name: Reload ans start Jenkins service
+  service:
+    name: jenkins
+    state: reloaded

@@ -16,8 +16,9 @@
 - name: Add Jenkins repository
   yum_repository:
     name: jenkins
+    description: Jenkins Weekly Release repository
     state: present
-    baseurl: http://pkg.jenkins.io/redhat
+    baseurl: https://pkg.jenkins.io/redhat
     gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
     gpgcheck: yes
     enabled: yes
