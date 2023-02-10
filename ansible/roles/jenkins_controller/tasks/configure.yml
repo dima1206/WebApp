@@ -8,7 +8,7 @@
   lineinfile:
     dest: /usr/lib/systemd/system/jenkins.service
     regexp: '^Environment="JAVA_OPTS='
-    line: "Environment=\"JAVA_OPTS=\"{{ jenkins_java_options }}\""
+    line: "Environment=\"JAVA_OPTS={{ jenkins_java_options }}\""
 
 - name: Copy main config file
   template:
