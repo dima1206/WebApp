@@ -36,7 +36,17 @@
     </hudson.tasks.Mailer_-UserProperty>
     <jenkins.security.ApiTokenProperty>
       <tokenStore>
-        <tokenList/>
+        <tokenList>
+          <jenkins.security.apitoken.ApiTokenStore_-HashedToken>
+            <uuid>{{ jenkins_api_token_uuid }}</uuid>
+            <name>{{ jenkins_api_token_name }}</name>
+            <creationDate>2023-02-10 13:35:03.131 UTC</creationDate>
+            <value>
+              <version>11</version>
+              <hash>{{ jenkins_api_token_hashed }}</hash>
+            </value>
+          </jenkins.security.apitoken.ApiTokenStore_-HashedToken>
+        </tokenList>
       </tokenStore>
     </jenkins.security.ApiTokenProperty>
   </properties>
