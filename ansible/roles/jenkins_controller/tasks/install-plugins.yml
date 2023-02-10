@@ -1,0 +1,13 @@
+---
+- name: Install plugins
+  jenkins_plugin:
+    name: "{{ item }}"
+    jenkins_home: "{{ jenkins_home }}"
+    owner: jenkins
+    group: jenkins
+    url: "{{ jenkins_url }}"
+    timeout: 60
+    url_username: "{{ jenkins_user }}"
+    url_password: "{{ jenkins_api_token }}"
+    force_basic_auth: true
+  with_items: "{{ jenkins_plugins }}"
