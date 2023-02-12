@@ -1,7 +1,7 @@
 ---
 jenkins_version: '2.390'
 
-jenkins_ip: 127.0.0.1
+jenkins_ip: "{{ ansible_host }}"
 jenkins_port: 8080
 jenkins_admin_email: admin@example.com
 
