@@ -5,7 +5,7 @@
     jenkins_home: "{{ jenkins_home }}"
     owner: jenkins
     group: jenkins
-    url: "{{ jenkins_url }}"
+    url: "{{ jenkins_local_url }}"
     timeout: 60
     url_username: "{{ jenkins_user }}"
     url_password: "{{ jenkins_api_token }}"

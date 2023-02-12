@@ -16,5 +16,5 @@ jenkins_plugins: []
 jenkins_jobs: []
 
 jenkins_url: "http://{{ jenkins_ip }}:{{ jenkins_port }}"
-local_jenkins_url: "http://127.0.0.1:{{ jenkins_port }}"
+jenkins_local_url: "http://127.0.0.1:{{ jenkins_port }}"
 jenkins_home: /var/lib/jenkins

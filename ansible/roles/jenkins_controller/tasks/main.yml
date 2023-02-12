@@ -7,7 +7,7 @@
 
 - name: Wait for Jenkins to start up
   uri:
-    url: "{{ local_jenkins_url }}"
+    url: "{{ jenkins_local_url }}"
     status_code: 200
     timeout: 5
     url_username: "{{ jenkins_user }}"
@@ -20,7 +20,7 @@
 
 - name: Set quiet mode
   uri:
-    url: "{{ jenkins_url }}/quietDown"
+    url: "{{ jenkins_local_url }}/quietDown"
     method: POST
     headers:
       Content-Type: "text/xml"
