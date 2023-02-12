@@ -84,9 +84,14 @@ Verify installation:
 ```
 ansible --version
 ```
+
 #### boto3 module
-TODO: finish and format
+
+The project uses `boto3` to create dynamic inventory from existing AWS instances. Use the following command to install the module:
+
+```
 python3 -m pip install --user boto3
+```
 
 ### AWS CLI
 
