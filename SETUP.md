@@ -84,6 +84,9 @@ Verify installation:
 ```
 ansible --version
 ```
+#### boto3 module
+TODO: finish and format
+python3 -m pip install --user boto3
 
 ### AWS CLI
 

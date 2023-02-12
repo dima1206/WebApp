@@ -20,6 +20,8 @@ module "jenkins_vpc" {
   name = "Jenkins VPC"
   cidr = local.cidr
 
+  enable_dns_hostnames = true
+
   azs                 = ["${var.region}a"]
   public_subnets      = [local.subnet]
   public_subnet_names = ["Jenkins subnet"]
@@ -112,6 +114,7 @@ resource "aws_instance" "jenkins_controller" {
 
   tags = merge(local.tags, {
     Name = "Jenkins controller"
+    Ansible_configure = "controller"
   })
 }
 
@@ -124,6 +127,7 @@ resource "aws_instance" "jenkins_agent" {
   subnet_id              = module.jenkins_vpc.public_subnets[0]
 
   tags = merge(local.tags, {
-    Name = "Jenkins agent"
+    Name = "Jenkins agent 1"
+    Ansible_configure = "agent"
   })
 }

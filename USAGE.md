@@ -12,18 +12,23 @@ Go to the Terraform folder:
 cd WebApp-jenkins-setup/terraform
 ```
 
+TODO: finish this guide
+
+Configure:
+terraform variables
+ansible variables
+ansible vault
+region (terraform variables and ansible dynamic inventory)
+
 Initialize terraform:
 
 ```
 terraform init
 ```
 
-TODO: finish this guide
-
-echo 'my_ip = "0.0.0.0/0"' > my_ip.tfvars  # TODO: ssh key
-terraform plan -var-file="my_ip.tfvars"
-terraform apply -var-file="my_ip.tfvars"
+terraform plan -var-file="my.tfvars"
+terraform apply -var-file="my.tfvars"
 
 TODO: destroy whatever was created from Jenkins first
 
-terraform destroy -var-file="my_ip.tfvars"
+terraform destroy -var-file="my.tfvars"
