@@ -5,6 +5,11 @@
 
 - import_tasks: "configure.yml"
 
+- name: Flush handlers after initial Jenkins configuration
+  meta: flush_handlers
+
+- import_tasks: "service/start.yml"
+
 - name: Wait for Jenkins to start up
   uri:
     url: "{{ jenkins_local_url }}"
@@ -14,7 +19,7 @@
     url_password: "{{ jenkins_api_token }}"
     force_basic_auth: true
   register: jenkins_service_status
-  retries: 30
+  retries: 10
   delay: 1
   until: jenkins_service_status is not failed
 
@@ -31,7 +36,7 @@
 
 - import_tasks: "install-plugins.yml"
 
-# TODO: Only stop if plugins were changed or configs will be changed
+# TODO: Only stop if configs will be changed
 - import_tasks: "service/stop.yml"
 
 # TODO: configure nodes
@@ -39,5 +44,8 @@
 # TODO: configure secrets
 
 - import_tasks: "configure-jobs.yml"
+
+- name: Flush handlers after configuring plugins, nodes, secrets and jobs
+  meta: flush_handlers
 
 - import_tasks: "service/start.yml"

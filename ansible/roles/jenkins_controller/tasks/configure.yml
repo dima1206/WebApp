@@ -7,6 +7,14 @@
     dest: /usr/lib/systemd/system/jenkins.service
     regexp: '^Environment="JAVA_OPTS='
     line: "Environment=\"JAVA_OPTS={{ jenkins_java_options }}\""
+  register: java_options_task
+  notify:
+    - Reload Jenkins service
+
+- name: Set pending reload variable
+  set_fact:
+    pending_reload: true
+  when: java_options_task.changed
 
 - name: Copy main config file
   template:
@@ -15,6 +23,8 @@
     owner: jenkins
     group: jenkins
     mode: 0644
+  notify:
+    - Restart Jenkins service
 
 - name: Copy location config file
   template:
@@ -23,6 +33,8 @@
     owner: jenkins
     group: jenkins
     mode: 0644
+  notify:
+    - Restart Jenkins service
 
 - name: Create users directory
   file:
@@ -31,6 +43,8 @@
     owner: jenkins
     group: jenkins
     mode: 0755
+  notify:
+    - Restart Jenkins service
 
 - name: Copy users config file
   template:
@@ -39,6 +53,8 @@
     owner: jenkins
     group: jenkins
     mode: 0755
+  notify:
+    - Restart Jenkins service
 
 - name: Create admin user directory
   file:
@@ -47,6 +63,8 @@
     owner: jenkins
     group: jenkins
     mode: 0700
+  notify:
+    - Restart Jenkins service
 
 - name: Copy admin user config file
   template:
@@ -55,7 +73,5 @@
     owner: jenkins
     group: jenkins
     mode: 0644
-
-# TODO: use handler and flush_handlers to avoid restart/reload when nothing was changed
-# TODO: use restart or reload depending on what was changed
-- import_tasks: "service/reload.yml"
+  notify:
+    - Restart Jenkins service
