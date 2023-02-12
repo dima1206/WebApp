@@ -56,8 +56,6 @@
     group: jenkins
     mode: 0644
 
-# TODO: skip/disable plugin setup wizard since the plugins will be installed via jenkins_plugin module
-
 # TODO: use handler and flush_handlers to avoid restart/reload when nothing was changed
 # TODO: use restart or reload depending on what was changed
 - import_tasks: "service/reload.yml"
