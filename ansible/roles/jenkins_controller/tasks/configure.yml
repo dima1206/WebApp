@@ -1,8 +1,6 @@
 ---
-- name: Make sure that Jenkins service is stopped
-  service:
-    name: jenkins
-    state: stopped
+# TODO: use `check_mode: yes` to check and stop Jenkins only if configs will be changed
+- import_tasks: service/stop.yml
 
 - name: Set Jenkins Java options
   lineinfile:
@@ -57,3 +55,9 @@
     owner: jenkins
     group: jenkins
     mode: 0644
+
+# TODO: skip/disable plugin setup wizard since the plugins will be installed via jenkins_plugin module
+
+# TODO: use handler and flush_handlers to avoid restart/reload when nothing was changed
+# TODO: use restart or reload depending on what was changed
+- import_tasks: "service/reload.yml"
