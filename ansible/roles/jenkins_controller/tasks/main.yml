@@ -31,11 +31,13 @@
 
 - import_tasks: "install-plugins.yml"
 
-# TODO: Only stop if configs will be changed
+# TODO: Only stop if plugins were changed or configs will be changed
 - import_tasks: "service/stop.yml"
+
+# TODO: configure nodes
 
 # TODO: configure secrets
 
-# TODO: configure jobs
+- import_tasks: "configure-jobs.yml"
 
 - import_tasks: "service/start.yml"

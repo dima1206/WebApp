@@ -9,6 +9,7 @@ jenkins_user: jenkins
 jenkins_api_token_name: ansible_token
 jenkins_api_token_uuid: '048eed1d-b393-40d3-9381-7974bcc062b4'
 
+# TODO: Move plugins, jobs and java options to playbook level
 jenkins_java_options: '-Djava.awt.headless=true -Dio.jenkins.plugins.artifact_manager_jclouds.s3.S3BlobStoreConfig.deleteArtifacts=true'
 
 jenkins_plugins:
@@ -24,6 +25,11 @@ jenkins_plugins:
   - pipeline-github-lib
   - pipeline-stage-view
   - timestamper
+
+jenkins_jobs:
+  - WebApp-CI-WAR
+  - WebApp-CI-Docker
+  - WebApp-CD
 
 jenkins_url: "http://{{ jenkins_ip }}:{{ jenkins_port }}"
 local_jenkins_url: "http://127.0.0.1:{{ jenkins_port }}"

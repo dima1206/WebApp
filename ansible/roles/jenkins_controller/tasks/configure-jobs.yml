@@ -1,0 +1,18 @@
+---
+- name: Create job directories
+  file:
+    path: "{{ jenkins_home }}/jobs/{{ item }}"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+  with_items: "{{ jenkins_jobs }}"
+
+- name: Copy job configurations
+  copy:
+    src: "{{ playbook_dir }}/files/jobs/{{ item }}/config.xml"
+    dest: "{{ jenkins_home }}/jobs/{{ item }}/config.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  with_items: "{{ jenkins_jobs }}"
