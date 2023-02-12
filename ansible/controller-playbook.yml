@@ -9,16 +9,16 @@
     jenkins_plugins:
       - github
       - maven-plugin
-      - copyartifact
-      - artifact-manager-s3
-      - docker-java-api
-      - docker-workflow
-      - command-launcher
-      - ssh-slaves
-      - workflow-aggregator
-      - pipeline-github-lib
-      - pipeline-stage-view
-      - timestamper
+      # - copyartifact
+      # - artifact-manager-s3
+      # - docker-java-api
+      # - docker-workflow
+      # - command-launcher
+      # - ssh-slaves
+      # - workflow-aggregator
+      # - pipeline-github-lib
+      # - pipeline-stage-view
+      # - timestamper
     jenkins_jobs:
       - WebApp-CI-WAR
       - WebApp-CI-Docker
