@@ -4,9 +4,6 @@ regions:
 
 boto_profile: setup-jenkins
 
-compose:
-  ansible_host: public_dns_name
-
 filters:
   tag:Ansible_configure: '*'
 keyed_groups:
