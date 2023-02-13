@@ -7,8 +7,6 @@
     group: jenkins
     mode: 0755
   with_items: "{{ jenkins_jobs }}"
-  notify:
-    - Restart Jenkins service
 
 - name: Copy job configurations
   copy:
@@ -18,5 +16,3 @@
     group: jenkins
     mode: 0644
   with_items: "{{ jenkins_jobs }}"
-  notify:
-    - Restart Jenkins service

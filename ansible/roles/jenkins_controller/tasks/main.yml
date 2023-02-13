@@ -7,8 +7,16 @@
 - import_tasks: service/stop.yml
 
 - import_tasks: "config/service.yml"
+  notify:
+    - Reload Jenkins service
+
 - import_tasks: "config/jenkins.yml"
+  notify:
+    - Restart Jenkins service
+
 - import_tasks: "config/users.yml"
+  notify:
+    - Restart Jenkins service
 
 - name: Flush handlers after initial Jenkins configuration
   meta: flush_handlers
@@ -49,6 +57,8 @@
 # TODO: configure secrets
 
 - import_tasks: "config/jobs.yml"
+  notify:
+    - Restart Jenkins service
 
 - name: Flush handlers after configuring plugins, nodes, secrets and jobs
   meta: flush_handlers

@@ -4,5 +4,3 @@
     dest: /usr/lib/systemd/system/jenkins.service
     regexp: '^Environment="JAVA_OPTS='
     line: "Environment=\"JAVA_OPTS={{ jenkins_java_options }}\""
-  notify:
-    - Reload Jenkins service

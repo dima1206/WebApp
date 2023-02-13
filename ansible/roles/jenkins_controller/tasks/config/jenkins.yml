@@ -6,8 +6,6 @@
     owner: jenkins
     group: jenkins
     mode: 0644
-  notify:
-    - Restart Jenkins service
 
 - name: Copy location config file
   template:
@@ -16,5 +14,3 @@
     owner: jenkins
     group: jenkins
     mode: 0644
-  notify:
-    - Restart Jenkins service
