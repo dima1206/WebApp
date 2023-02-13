@@ -4,11 +4,5 @@
     dest: /usr/lib/systemd/system/jenkins.service
     regexp: '^Environment="JAVA_OPTS='
     line: "Environment=\"JAVA_OPTS={{ jenkins_java_options }}\""
-  register: java_options_task
   notify:
     - Reload Jenkins service
-
-- name: Set pending reload variable
-  set_fact:
-    pending_reload: true
-  when: java_options_task.changed

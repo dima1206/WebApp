@@ -1,16 +1,12 @@
 ---
-- name: Restart Jenkins service
-  service:
-    name: jenkins
-    state: restarted
-  when: (pending_reload is not defined) or not pending_reload
-
 - name: Reload Jenkins service
   service:
     name: jenkins
     state: reloaded
+  register: reloaded
 
-- name: Reset pending reload variable
-  set_fact:
-    pending_reload: false
-  listen: Reload Jenkins service
+- name: Restart Jenkins service
+  service:
+    name: jenkins
+    state: restarted
+  when: (reloaded is not defined) or not reloaded.changed
