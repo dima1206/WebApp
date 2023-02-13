@@ -1,0 +1,20 @@
+---
+- name: Create nodes directories
+  file:
+    path: "{{ jenkins_home }}/nodes/{{ item.name }}"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+  with_items: "{{ jenkins_ssh_nodes }}"
+
+- name: Copy nodes configurations
+  template:
+    src: "nodes/ssh_agent_config.xml.j2"
+    dest: "{{ jenkins_home }}/nodes/{{ item.name }}/config.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  vars:
+    ssh_node: "{{ item }}"
+  with_items: "{{ jenkins_ssh_nodes }}"

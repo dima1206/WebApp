@@ -1,0 +1,36 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<slave>
+  <name>{{ ssh_node.name }}</name>
+{% if ssh_node.description is defined %}
+  <description>{{ ssh_node.description }}</description>
+{% endif %}
+  <remoteFS>{{ ssh_node.remoteFS }}</remoteFS>
+{% if ssh_node.executors is defined %}
+  <numExecutors>{{ ssh_node.executors }}</numExecutors>
+{% else %}
+  <numExecutors>1</numExecutors>
+{% endif %}
+  <mode>NORMAL</mode>
+  <retentionStrategy class="hudson.slaves.RetentionStrategy$Demand">
+    <inDemandDelay>0</inDemandDelay>
+    <idleDelay>30</idleDelay>
+  </retentionStrategy>
+  <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@2.854.v7fd446b_337c9">
+    <host>{{ ssh_node.host }}</host>
+{% if ssh_node.port is defined %}
+    <port>{{ ssh_node.port }}</port>
+{% else %}
+    <port>22</port>
+{% endif %}
+    <credentialsId>{{ ssh_node.credentialsId }}</credentialsId>
+    <launchTimeoutSeconds>60</launchTimeoutSeconds>
+    <maxNumRetries>10</maxNumRetries>
+    <retryWaitTime>15</retryWaitTime>
+    <sshHostKeyVerificationStrategy class="hudson.plugins.sshslaves.verifiers.KnownHostsFileKeyVerificationStrategy"/>
+    <tcpNoDelay>true</tcpNoDelay>
+  </launcher>
+{% if ssh_node.labels is defined %}
+  <label>{{ ssh_node.labels }}</label>
+{% endif %}
+  <nodeProperties/>
+</slave>

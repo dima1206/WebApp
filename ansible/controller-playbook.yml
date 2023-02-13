@@ -13,8 +13,7 @@
       # - artifact-manager-s3
       # - docker-java-api
       # - docker-workflow
-      # - command-launcher
-      # - ssh-slaves
+      - ssh-slaves
       # - workflow-aggregator
       # - pipeline-github-lib
       # - pipeline-stage-view
@@ -23,6 +22,14 @@
       - WebApp-CI-WAR
       - WebApp-CI-Docker
       - WebApp-CD
+    jenkins_ssh_nodes:
+      - name: node1
+        description: A node on AWS
+        host: 10.1.0.192	  # TODO: dynamic agent IP
+        remoteFS: /home/jenkins
+        credentialsId: ssh-agent
+        labels: git java maven docker
+        executors: 3
 
   roles:
     - jenkins_controller
