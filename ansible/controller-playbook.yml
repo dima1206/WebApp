@@ -30,6 +30,13 @@
         credentialsId: ssh-agent
         labels: git java maven docker
         executors: 3
+      - name: webserver
+        description: The server to deploy to
+        host: 10.1.0.31	  # TODO: dynamic agent IP
+        remoteFS: /home/jenkins
+        credentialsId: jenkins_to_webserver
+        labels: webserver
+        executors: 1
 
   roles:
     - jenkins_controller
