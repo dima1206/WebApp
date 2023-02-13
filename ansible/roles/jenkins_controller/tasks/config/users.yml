@@ -1,0 +1,40 @@
+---
+- name: Create users directory
+  file:
+    path: "{{ jenkins_home }}/users"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+  notify:
+    - Restart Jenkins service
+
+- name: Copy users config file
+  template:
+    src: users/users.xml.j2
+    dest: "{{ jenkins_home }}/users/users.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+  notify:
+    - Restart Jenkins service
+
+- name: Create admin user directory
+  file:
+    path: "{{ jenkins_home }}/users/{{ jenkins_user }}"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0700
+  notify:
+    - Restart Jenkins service
+
+- name: Copy admin user config file
+  template:
+    src: users/user_config.xml.j2
+    dest: "{{ jenkins_home }}/users/{{ jenkins_user }}/config.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  notify:
+    - Restart Jenkins service
