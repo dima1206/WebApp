@@ -10,3 +10,8 @@
     name: jenkins
     state: restarted
   when: (reloaded is not defined) or not reloaded.changed
+
+- name: Reset reloaded.changed variable
+  set_fact:
+    reloaded: { 'changed': false }
+  listen: Reload Jenkins service
