@@ -29,8 +29,9 @@ resource "aws_instance" "jenkins_agent" {
   vpc_security_group_ids = [aws_security_group.jenkins_agent_sg.id]
   subnet_id              = module.jenkins_vpc.public_subnets[0]
 
+  user_data = "${file("userdata/agent.sh")}"
+
   tags = merge(local.tags, {
     Name = "Jenkins agent 1"
-    Ansible_configure = "agent"
   })
 }
