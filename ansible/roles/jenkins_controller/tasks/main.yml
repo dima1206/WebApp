@@ -62,11 +62,13 @@
   notify:
     - Restart Jenkins service
 
+# TODO: config settings (e.g. io.jenkins.plugins.artifact_manager_jclouds.s3.S3BlobStoreConfig.xml)
+
 - import_tasks: "config/jobs.yml"
   notify:
     - Restart Jenkins service
 
-# TODO: known_hosts (github, agents, webserver)
+- import_tasks: "known-hosts.yml"
 
 - name: Flush handlers after configuring plugins, nodes, secrets and jobs
   meta: flush_handlers
