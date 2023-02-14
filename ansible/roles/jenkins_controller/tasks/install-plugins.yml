@@ -13,3 +13,9 @@
   with_items: "{{ jenkins_plugins }}"
   notify:
     - Restart Jenkins service
+
+- name: Make sure that all plugins were downloaded
+  wait_for:
+    path: "{{ jenkins_home }}/plugins/{{ item }}.jpi"
+    timeout: 1
+  with_items: "{{ jenkins_plugins }}"
