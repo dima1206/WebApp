@@ -56,11 +56,17 @@
   notify:
     - Restart Jenkins service
 
-# TODO: configure secrets (700, 644)
+# TODO: fix credentials for nodes
+
+- import_tasks: "config/secrets.yml"
+  notify:
+    - Restart Jenkins service
 
 - import_tasks: "config/jobs.yml"
   notify:
     - Restart Jenkins service
+
+# TODO: known_hosts (github, agents, webserver)
 
 - name: Flush handlers after configuring plugins, nodes, secrets and jobs
   meta: flush_handlers

@@ -10,3 +10,5 @@ my.tfvars
 
 # TODO: add vault to the repo after properly storing it
 vault.yml
+
+credentials/
