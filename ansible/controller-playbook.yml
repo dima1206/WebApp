@@ -27,7 +27,7 @@
         description: A node on AWS
         host: 10.1.0.192	  # TODO: dynamic agent IP
         remoteFS: /home/jenkins
-        credentialsId: ssh-agent
+        credentialsId: ssh-agents
         labels: git java maven docker
         executors: 3
       - name: webserver

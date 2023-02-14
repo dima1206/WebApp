@@ -65,8 +65,6 @@
   notify:
     - Restart Jenkins service
 
-# TODO: fix credentials for nodes
-
 - import_tasks: "config/secrets.yml"
   notify:
     - Restart Jenkins service
