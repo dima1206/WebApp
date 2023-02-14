@@ -25,14 +25,14 @@
     jenkins_ssh_nodes:
       - name: node1
         description: A node on AWS
-        host: 10.1.0.192	  # TODO: dynamic agent IP
+        host: 10.1.0.10	  # TODO: dynamic agent IP
         remoteFS: /home/jenkins
         credentialsId: ssh-agents
         labels: git java maven docker
         executors: 3
       # - name: webserver
       #   description: The server to deploy to
-      #   host: 10.1.0.31	  # TODO: dynamic agent IP
+      #   host: 10.1.0.20	  # TODO: dynamic agent IP
       #   remoteFS: /home/jenkins
       #   credentialsId: jenkins_to_webserver
       #   labels: webserver
