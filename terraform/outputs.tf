@@ -4,6 +4,6 @@ output "jenkins_controller_pub_ip" {
 }
 
 output "jenkins_agent_pub_ip" {
-  value       = aws_instance.jenkins_agent.public_ip
+  value       = aws_instance.jenkins_agent1.public_ip
   description = "Public IP for Jenkins agent"
 }
