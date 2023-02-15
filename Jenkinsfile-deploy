@@ -27,7 +27,7 @@ pipeline {
     stage('Run the new container') {
       steps {
         script {
-          dockerImage.run('--name webapp --detach --publish 8080:8080')
+          dockerImage.run('--name webapp --detach --publish 80:8080')
         }
       }
     }
