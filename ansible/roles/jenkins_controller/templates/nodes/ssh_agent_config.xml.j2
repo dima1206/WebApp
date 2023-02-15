@@ -11,10 +11,12 @@
   <numExecutors>1</numExecutors>
 {% endif %}
   <mode>NORMAL</mode>
-  <retentionStrategy class="hudson.slaves.RetentionStrategy$Demand">
+  <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
+{# TODO: make retention strategy configurable #}
+{#   <retentionStrategy class="hudson.slaves.RetentionStrategy$Demand">
     <inDemandDelay>0</inDemandDelay>
     <idleDelay>30</idleDelay>
-  </retentionStrategy>
+  </retentionStrategy> #}
   <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@2.854.v7fd446b_337c9">
     <host>{{ ssh_node.host }}</host>
 {% if ssh_node.port is defined %}
