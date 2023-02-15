@@ -6,9 +6,6 @@ my.tfvars
 
 *.md.backup
 
-*.ini
-
-# TODO: add vault to the repo after properly storing it
-vault.yml
+.vault-password
 
 credentials/
