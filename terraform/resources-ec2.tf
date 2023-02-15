@@ -39,3 +39,19 @@ resource "aws_instance" "jenkins_agent1" {
     Name = "Jenkins agent 1"
   })
 }
+
+resource "aws_instance" "webserver" {
+  ami           = local.amazon_linux_ami
+  instance_type = var.instance_type
+  key_name      = "my_ssh_pub_key"
+  private_ip    = local.webserver_private_ip
+
+  vpc_security_group_ids = [aws_security_group.webserver_sg.id]
+  subnet_id              = module.jenkins_vpc.public_subnets[0]
+
+  user_data = "${file("userdata/webserver.sh")}"
+
+  tags = merge(local.tags, {
+    Name = "Webserver"
+  })
+}

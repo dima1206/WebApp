@@ -3,6 +3,8 @@ locals {
   github_webhook_ips = ["192.30.252.0/22", "185.199.108.0/22", "140.82.112.0/20", "143.55.64.0/20"]
 }
 
+# TODO: reuse common rules in security groups
+
 resource "aws_security_group" "jenkins_controller_sg" {
   name        = "Jenkins controller security group"
   description = "Security group for Jenkins controller"
@@ -70,5 +72,48 @@ resource "aws_security_group" "jenkins_agent_sg" {
 
   tags = merge(local.tags, {
     Name = "Jenkins agent security group"
+  })
+}
+
+resource "aws_security_group" "webserver_sg" {
+  name        = "Webserver security group"
+  description = "Security group for Webserver"
+  vpc_id      = module.jenkins_vpc.vpc_id
+
+  ingress {
+    description = "My IP"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.my_ip]
+  }
+
+  ingress {
+    description = "SSH access from Jenkins controller"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["${aws_instance.jenkins_controller.private_ip}/32"]
+  }
+
+  ingress {
+    description = "HTTP access from everywhere"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description      = "All traffic"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = merge(local.tags, {
+    Name = "Webserver security group"
   })
 }
