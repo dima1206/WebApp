@@ -1,6 +1,4 @@
 ---
-- include_vars: vault.yml
-
 - import_tasks: "install.yml"
 
 # TODO: Only stop if configs will be changed
@@ -82,3 +80,5 @@
 
 # TODO: enable jenkins service
 - import_tasks: "service/start.yml"
+
+# TODO: community.general.github_webhook
