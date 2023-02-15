@@ -14,20 +14,20 @@ pipeline {
         }
       }
     }
-    stage('Stop all containers') {
+    stage('Stop old container') {
       steps {
-        sh 'docker stop `docker ps -qa`'
+        sh 'docker ps --filter name=webapp --quiet | xargs --no-run-if-empty docker container stop'
       }
     }
-    stage('Remove all containers') {
+    stage('Remove old container') {
       steps {
-        sh 'docker rm `docker ps -qa`'
+        sh 'docker container ls --all --filter name=webapp --quiet | xargs --no-run-if-empty docker container rm'
       }
     }
     stage('Run the new container') {
       steps {
         script {
-          dockerImage.run('-d -p 8080:8080')
+          dockerImage.run('--name webapp --detach --publish 8080:8080')
         }
       }
     }
