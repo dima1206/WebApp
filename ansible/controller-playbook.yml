@@ -41,6 +41,8 @@
         credentialsId: jenkins_to_webserver
         labels: webserver
         executors: 1
+    github_user: dima1206
+    github_repo: dima1206/WebApp
 
   roles:
     - jenkins_controller

@@ -93,6 +93,8 @@ The project uses `boto3` to create dynamic inventory from existing AWS instances
 python3 -m pip install --user boto3
 ```
 
+TODO: `python3 -m pip install --user PyGithub`
+
 ### AWS CLI
 
 #### Create a user for AWS CLI

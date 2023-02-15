@@ -81,4 +81,4 @@
 # TODO: enable jenkins service
 - import_tasks: "service/start.yml"
 
-# TODO: community.general.github_webhook
+- import_tasks: "github-webhook.yml"
