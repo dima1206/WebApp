@@ -1,5 +1,4 @@
 ---
-
 - name: Enable amazon-linux-extras OpenJDK
   shell: amazon-linux-extras enable java-openjdk11
   args:

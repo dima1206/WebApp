@@ -1,0 +1,29 @@
+---
+- import_tasks: "service.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+- import_tasks: "jenkins.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+- import_tasks: "users.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+
+- name: Flush handlers before initial Jenkins configuration
+  meta: flush_handlers
+
+- import_tasks: "service.yml"
+  notify:
+    - Reload Jenkins service
+- import_tasks: "jenkins.yml"
+  notify:
+    - Restart Jenkins service
+- import_tasks: "users.yml"
+  notify:
+    - Restart Jenkins service
+
+- name: Flush handlers after initial Jenkins configuration
+  meta: flush_handlers

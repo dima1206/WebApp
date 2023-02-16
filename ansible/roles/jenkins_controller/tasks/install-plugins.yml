@@ -1,4 +1,39 @@
 ---
+- import_tasks: "service/start.yml"
+
+- name: Wait for Jenkins to start up
+  uri:
+    url: "{{ jenkins_local_url }}"
+    status_code: 200
+    timeout: 5
+    url_username: "{{ jenkins_user }}"
+    url_password: "{{ jenkins_api_token }}"
+    force_basic_auth: true
+  register: jenkins_service_status
+  retries: 10
+  delay: 1
+  until: >
+      'status' in jenkins_service_status and
+      jenkins_service_status['status'] == 200
+
+# For some reason Jenkins doesn't install plugins right after start, even though it returns code 200
+# TODO: retry installing plugins instead of waiting beforehand
+#       or find another way to check if Jenkins is ready
+- name: Pause while Jenkins is starting
+  pause:
+    seconds: 60
+
+- name: Set quiet mode
+  uri:
+    url: "{{ jenkins_local_url }}/quietDown"
+    method: POST
+    headers:
+      Content-Type: "text/xml"
+    status_code: 200,302
+    url_username: "{{ jenkins_user }}"
+    url_password: "{{ jenkins_api_token }}"
+    force_basic_auth: true
+
 - name: Install plugins
   jenkins_plugin:
     name: "{{ item }}"
@@ -19,3 +54,6 @@
     path: "{{ jenkins_home }}/plugins/{{ item }}.jpi"
     timeout: 1
   with_items: "{{ jenkins_plugins }}"
+
+- name: Flush handlers after installing plugins
+  meta: flush_handlers

@@ -1,0 +1,32 @@
+---
+# TODO: config settings (e.g. io.jenkins.plugins.artifact_manager_jclouds.s3.S3BlobStoreConfig.xml)
+
+- import_tasks: "nodes.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+- import_tasks: "secrets.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+    - Remove identity.key.enc
+- import_tasks: "jobs.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+
+- name: Flush handlers before other Jenkins configurations
+  meta: flush_handlers
+
+- import_tasks: "nodes.yml"
+  notify:
+    - Restart Jenkins service
+- import_tasks: "secrets.yml"
+  notify:
+    - Restart Jenkins service
+- import_tasks: "jobs.yml"
+  notify:
+    - Restart Jenkins service
+
+- name: Flush handlers after other Jenkins configurations
+  meta: flush_handlers
