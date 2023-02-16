@@ -1,5 +1,0 @@
----
-- name: Make sure that Jenkins service is stopped
-  service:
-    name: jenkins
-    state: stopped

@@ -1,23 +1,41 @@
 ---
+
+#### Install Jenkins
+
 - import_tasks: "install.yml"
 
-# TODO: Only stop if configs will be changed
-- import_tasks: service/stop.yml
+#### Initial configs
+
+- import_tasks: "config/service.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+- import_tasks: "config/jenkins.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+- import_tasks: "config/users.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+
+- name: Flush handlers before initial Jenkins configuration
+  meta: flush_handlers
 
 - import_tasks: "config/service.yml"
   notify:
     - Reload Jenkins service
-
 - import_tasks: "config/jenkins.yml"
   notify:
     - Restart Jenkins service
-
 - import_tasks: "config/users.yml"
   notify:
     - Restart Jenkins service
 
 - name: Flush handlers after initial Jenkins configuration
   meta: flush_handlers
+
+#### Install plugins
 
 - import_tasks: "service/start.yml"
 
@@ -56,29 +74,44 @@
 
 - import_tasks: "install-plugins.yml"
 
-# TODO: Only stop if configs will be changed
-- import_tasks: "service/stop.yml"
+- name: Flush handlers after installing plugins
+  meta: flush_handlers
+
+#### Other configs (node, secrets and jobs)
+# TODO: config settings (e.g. io.jenkins.plugins.artifact_manager_jclouds.s3.S3BlobStoreConfig.xml)
+
+- import_tasks: "config/nodes.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+- import_tasks: "config/secrets.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+    - Remove identity.key.enc
+- import_tasks: "config/jobs.yml"
+  check_mode: yes
+  notify:
+    - Stop Jenkins service
+
+- name: Flush handlers before other Jenkins configurations
+  meta: flush_handlers
 
 - import_tasks: "config/nodes.yml"
   notify:
     - Restart Jenkins service
-
 - import_tasks: "config/secrets.yml"
   notify:
     - Restart Jenkins service
-
-# TODO: config settings (e.g. io.jenkins.plugins.artifact_manager_jclouds.s3.S3BlobStoreConfig.xml)
-
 - import_tasks: "config/jobs.yml"
   notify:
     - Restart Jenkins service
 
 - import_tasks: "known-hosts.yml"
 
-- name: Flush handlers after configuring plugins, nodes, secrets and jobs
+- name: Flush handlers after other Jenkins configurations
   meta: flush_handlers
 
-# TODO: enable jenkins service
-- import_tasks: "service/start.yml"
+- import_tasks: "service/start-enable.yml"
 
 - import_tasks: "github-webhook.yml"

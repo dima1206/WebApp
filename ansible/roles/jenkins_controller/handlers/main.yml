@@ -15,3 +15,13 @@
   set_fact:
     reloaded: { 'changed': false }
   listen: Reload Jenkins service
+
+- name: Stop Jenkins service
+  service:
+    name: jenkins
+    state: stopped
+
+- name: Remove identity.key.enc
+  file:
+    path: "{{ jenkins_home }}/identity.key.enc"
+    state: absent
