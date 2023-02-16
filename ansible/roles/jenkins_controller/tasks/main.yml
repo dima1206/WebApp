@@ -14,4 +14,17 @@
 
 - import_tasks: "github-webhook.yml"
 
+- import_tasks: "wait-startup.yml"
+
+- name: Make sure quiet mode is disabled
+  uri:
+    url: "{{ jenkins_local_url }}/cancelQuietDown"
+    method: POST
+    headers:
+      Content-Type: "text/xml"
+    status_code: 200,302
+    url_username: "{{ jenkins_user }}"
+    url_password: "{{ jenkins_api_token }}"
+    force_basic_auth: true
+
 # TODO: trigger first build with ansible

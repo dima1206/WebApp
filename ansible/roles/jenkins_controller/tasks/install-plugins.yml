@@ -1,20 +1,7 @@
 ---
 - import_tasks: "service/start.yml"
 
-- name: Wait for Jenkins to start up
-  uri:
-    url: "{{ jenkins_local_url }}"
-    status_code: 200
-    timeout: 5
-    url_username: "{{ jenkins_user }}"
-    url_password: "{{ jenkins_api_token }}"
-    force_basic_auth: true
-  register: jenkins_service_status
-  retries: 10
-  delay: 1
-  until: >
-      'status' in jenkins_service_status and
-      jenkins_service_status['status'] == 200
+- import_tasks: "wait-startup.yml"
 
 # For some reason Jenkins doesn't install plugins right after start, even though it returns code 200
 # TODO: retry installing plugins instead of waiting beforehand
