@@ -17,6 +17,7 @@ jenkins_jobs:
   - WebApp-CI-WAR
   - WebApp-CI-Docker
   - WebApp-CD
+jenkins_first_job: WebApp-CI-WAR
 jenkins_loggers:
   - webhook-github.xml
 jenkins_ssh_nodes:

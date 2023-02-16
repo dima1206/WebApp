@@ -1,0 +1,27 @@
+---
+- name: Check if there are existing builds
+  find:
+    paths: "{{ jenkins_home }}/jobs/{{ jenkins_first_job }}/builds"
+    patterns: '^[0-9]+$'
+    use_regex: true
+    file_type: directory
+  register: build
+  when: jenkins_first_job is defined
+
+- name: Print found builds for the first job
+  debug:
+    var: build
+    verbosity: 1
+  when: jenkins_first_job is defined
+
+- name: Trigger first build
+  uri:
+    url: "{{ jenkins_local_url }}/job/{{ jenkins_first_job }}/build"
+    method: POST
+    status_code: 201
+    url_username: "{{ jenkins_user }}"
+    url_password: "{{ jenkins_api_token }}"
+    force_basic_auth: true
+  register: response
+  changed_when: true
+  when: build is defined and build.matched == 0

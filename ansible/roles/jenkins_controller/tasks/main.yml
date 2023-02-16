@@ -27,4 +27,4 @@
     url_password: "{{ jenkins_api_token }}"
     force_basic_auth: true
 
-# TODO: trigger first build with ansible
+- import_tasks: "trigger-build.yml"
