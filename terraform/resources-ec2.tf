@@ -5,9 +5,13 @@ locals {
   webserver_private_ip = "10.1.0.20"
 }
 
+data "local_file" "my_ssh_public_key" {
+  filename = var.my_ssh_public_key_path
+}
+
 resource "aws_key_pair" "my_ssh_pub_key" {
   key_name   = "my_ssh_pub_key"
-  public_key = var.my_ssh_pub_key
+  public_key = data.local_file.my_ssh_public_key.content
 }
 
 resource "aws_instance" "jenkins_controller" {

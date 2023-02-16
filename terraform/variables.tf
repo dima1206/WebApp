@@ -22,6 +22,14 @@ variable "my_ip" {
   description = "Your public IP (or IP range) that will be allowed to access Jenkins. Format: X.X.X.X/X"
 }
 
-variable "my_ssh_pub_key" {
-  description = "Your public SSH key to connect to EC2 instances"
+variable "my_ssh_public_key_path" {
+  description = "Path to your public SSH key to connect to EC2 instances"
+}
+
+variable "my_ssh_private_key_path" {
+  description = "Path to your private SSH key to connect to EC2 instances"
+}
+
+variable "ansible_vault_password_path" {
+  description = "Path to your password file for ansible vault"
 }
