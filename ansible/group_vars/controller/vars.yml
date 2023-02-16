@@ -17,6 +17,8 @@ jenkins_jobs:
   - WebApp-CI-WAR
   - WebApp-CI-Docker
   - WebApp-CD
+jenkins_loggers:
+  - webhook-github.xml
 jenkins_ssh_nodes:
   - name: node1
     description: A node on AWS

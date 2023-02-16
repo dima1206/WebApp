@@ -1,0 +1,17 @@
+---
+- name: Create log directory
+  file:
+    path: "{{ jenkins_home }}/log"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Copy log configurations
+  copy:
+    src: "{{ playbook_dir }}/files/log/{{ item }}"
+    dest: "{{ jenkins_home }}/log/{{ item }}"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  with_items: "{{ jenkins_loggers }}"
