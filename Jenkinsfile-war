@@ -41,7 +41,7 @@ pipeline {
         sh "mv target/WebApp.war ${WAR_ARTIFACT_FILE_NAME}"
       }
     }
-    stage('Push WAR file to the S3 bucket') {
+    stage('Archive WAR artifact') {
       steps {
         archiveArtifacts "${WAR_ARTIFACT_FILE_NAME}"
       }
