@@ -2,7 +2,7 @@
 - name: Install plugins and make sure they were installed
   block:
 
-  - name: Set number of retries
+  - name: Set number of the current attempt
     set_fact:
       plugins_retry_number: "{{ plugins_retry_number | default(0) | int + 1 }}"
 
@@ -35,7 +35,7 @@
     - name: Fail when retry limit is reached
       fail:
         msg: "Retry limit is reached"
-      when: plugins_retry_number | int == 2
+      when: plugins_retry_number | int == jenkins_plugins_retry_limit | int
 
     - name: Retry installing plugins
       include_tasks: install-retry.yml

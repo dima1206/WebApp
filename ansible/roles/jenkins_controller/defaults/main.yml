@@ -15,6 +15,8 @@ jenkins_plugins: []
 jenkins_jobs: []
 jenkins_loggers: []
 
+jenkins_plugins_retry_limit: 2
+
 # List of maps. Each map has the following fields:
 #  - required: name, host, remoteFS and credentialsId.
 #  - not required: port, description, executors and labels
