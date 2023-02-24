@@ -4,7 +4,7 @@
 
 - import_tasks: "config-initial/main.yml"
 
-- import_tasks: "install-plugins.yml"
+- import_tasks: "install-plugins/main.yml"
 
 - import_tasks: "config-other/main.yml"
 

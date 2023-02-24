@@ -1,0 +1,41 @@
+---
+- name: Install plugins and make sure they were installed
+  block:
+
+  - name: Set number of retries
+    set_fact:
+      plugins_retry_number: "{{ plugins_retry_number | default(0) | int + 1 }}"
+
+  - name: Install plugins
+    community.general.jenkins_plugin:
+      name: "{{ item }}"
+      jenkins_home: "{{ jenkins_home }}"
+      owner: jenkins
+      group: jenkins
+      url: "{{ jenkins_local_url }}"
+      timeout: 60
+      url_username: "{{ jenkins_user }}"
+      url_password: "{{ jenkins_api_token }}"
+      force_basic_auth: true
+    with_items: "{{ jenkins_plugins }}"
+    notify:
+      - Restart Jenkins service
+
+  - name: Make sure that all plugins were downloaded
+    wait_for:
+      path: "{{ jenkins_home }}/plugins/{{ item }}.jpi"
+      timeout: 1
+    with_items: "{{ jenkins_plugins }}"
+
+  rescue:
+    - name: Print number of attempts for installing plugins
+      debug:
+        msg: "Attempt {{ plugins_retry_number }} for installing plugins has failed"
+
+    - name: Fail when retry limit is reached
+      fail:
+        msg: "Retry limit is reached"
+      when: plugins_retry_number | int == 2
+
+    - name: Retry installing plugins
+      include_tasks: install-retry.yml

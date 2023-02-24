@@ -1,0 +1,23 @@
+---
+- import_tasks: "service/start.yml"
+
+- import_tasks: "wait-startup.yml"
+
+- name: Set quiet mode
+  uri:
+    url: "{{ jenkins_local_url }}/quietDown"
+    method: POST
+    headers:
+      Content-Type: "text/xml"
+    status_code: 200,302
+    url_username: "{{ jenkins_user }}"
+    url_password: "{{ jenkins_api_token }}"
+    force_basic_auth: true
+
+# Retry because sometimes community.general.jenkins_plugin
+# reports changed state even when it failed to install plugin
+- name: Install plugins with retry
+  include_tasks: install-retry.yml
+
+- name: Flush handlers after installing plugins
+  meta: flush_handlers
